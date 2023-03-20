@@ -1,0 +1,45 @@
+package com.projecttrial;
+
+import java.util.*;
+
+public class RecentlyPlayedStore {
+
+  private int capacity;
+  private Map<String, LinkedList<String>> recentlyPlayed;
+
+  public RecentlyPlayedStore(int capacity) {
+    this.capacity = capacity;
+    this.recentlyPlayed = new HashMap<String, LinkedList<String>>();
+  }
+
+  public void addRecentlyPlayed(String user, String song) {
+    if (!recentlyPlayed.containsKey(user)) {
+      recentlyPlayed.put(user, new LinkedList<String>());
+    }
+    LinkedList<String> userSongs = recentlyPlayed.get(user);
+    userSongs.addFirst(song);
+    if (userSongs.size() > capacity) {
+      userSongs.removeLast();
+    }
+  }
+
+  public List<String> getRecentlyPlayed(String user) {
+    if (!recentlyPlayed.containsKey(user)) {
+      return Collections.emptyList();
+    }
+    return recentlyPlayed.get(user);
+  }
+
+
+	public static void main(String[] args) {
+		RecentlyPlayedStore store = new RecentlyPlayedStore(3);
+
+		store.addRecentlyPlayed("Folk", "Song 1");
+		store.addRecentlyPlayed("Folk", "Song 2");
+		store.addRecentlyPlayed("Melody", "Song 3");
+		store.addRecentlyPlayed("Folk", "Song 4");
+		store.addRecentlyPlayed("Melody", "Song 5");
+		store.addRecentlyPlayed("Melody", "Song 6");
+
+		System.out.println(store.getRecentlyPlayed("Folk")); 
+		System.out.println(store.getRecentlyPlayed("Melody")); 
